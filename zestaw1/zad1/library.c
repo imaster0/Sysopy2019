@@ -8,10 +8,15 @@ int save_current_file(char* tmp_file) {
 
 	if (tmp_file == NULL) {
 		fprintf(stderr, "Tmp_file cannot be NULL");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 
 	FILE *file = fopen(tmp_file, "r");
+	if (file == NULL) {
+		fprintf(stderr, "Cannot read file [%s]\n", tmp_file);
+		return -1;
+	} 
+
 	fseek(file, 0, SEEK_END);
 	
 	size_t len = ftell(file);
