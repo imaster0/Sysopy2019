@@ -50,18 +50,20 @@ int main(int argc, char **argv) {
     int values = 0;
     int processes = 0;
 
+    system("mkdir archiwum 2>/dev/null"); // :)
+
+    if (type != 1 && type != 2)
+    {
+        fprintf(stderr, "Unknown type [%d]\n", type);
+        exit(0);
+    }
+    setrlimit(RLIMIT_AS, &mem_limit);
+    setrlimit(RLIMIT_CPU, &cpu_limit);
+
     while (fscanf(file, "%s %d", path, &freq) != EOF) {
         
         pid_t child = fork();
         if (child == 0) {
-            
-            if (type != 1 && type != 2) {
-                fprintf(stderr, "Unknown type [%d]\n", type);
-                exit(0);
-            }
-            setrlimit(RLIMIT_AS, &mem_limit);
-            setrlimit(RLIMIT_CPU, &cpu_limit);
-
             monitor(path, freq, monitoring_time, type);
         } else {
             processes++;
